@@ -28,6 +28,8 @@ class ClockPageState extends State<ClockPage> {
   final blackClock = ValueNotifier(Duration(milliseconds: 1));
   final ended = ValueNotifier(false);
 
+  late final Timer timer;
+
   ChessColor turn = ChessColor.white;
   ChessColor? winner;
 
@@ -42,7 +44,7 @@ class ClockPageState extends State<ClockPage> {
       _checkTimeout(blackClock.value, ChessColor.white);
     });
 
-    final timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final subtractedDuration =
           (turn == ChessColor.white ? whiteClock : blackClock).value.inSeconds -
               1;
@@ -54,23 +56,19 @@ class ClockPageState extends State<ClockPage> {
         blackClock.value = Duration(seconds: duration);
       }
     });
-
-    ended.addListener(() {
-      timer.cancel();
-      _endClock();
-    });
   }
 
-  void _checkTimeout(Duration clock, ChessColor color) {
-    if (clock.inMicroseconds > 0) return;
+  void _checkTimeout(Duration clock, ChessColor winner) {
+    if (clock.inMilliseconds > 0) return;
 
-    setState(() {
-      ended.value = true;
-      winner = color;
-    });
+    _endClock(winner);
   }
 
-  void _endClock() {
+  void _endClock(ChessColor winner) {
+    ended.value = true;
+    this.winner = winner;
+    timer.cancel();
+
     showCupertinoDialog(
         context: context,
         builder: (context) => Container(
@@ -139,8 +137,6 @@ class ClockPageState extends State<ClockPage> {
     );
   }
 }
-
-// todo: volumne controll to exit
 
 class ClockArea extends StatefulWidget {
   final Color color;

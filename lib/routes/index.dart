@@ -18,60 +18,73 @@ class IndexPageState extends State<IndexPage> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 22.0,
-                    vertical: 24.0,
+                    horizontal: 24.0,
+                    vertical: 36.0,
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        padding: EdgeInsets.symmetric(vertical: 26.0),
                       ),
-                      Center(
-                          child: Text(
-                        "Chess Clock Presets",
+                      Text(
+                        "Your Clocks",
                         style: TextStyle(
                             fontSize: 30.0,
                             fontVariations: [FontVariation("wght", 700)]),
-                      )),
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 26.0),
                       ),
                       GridView(
+                        physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: 1,
                           childAspectRatio: 2 / 1,
                           mainAxisSpacing: 16,
-                          crossAxisSpacing: 10,
+                          crossAxisSpacing: 16,
                         ),
                         children: [
-                          CupertinoButton(
-                              color: Colors.black,
-                              padding: EdgeInsets.zero,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, "/clock");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 16.0, horizontal: 20.0),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("2m + 1s",
+                                  Text("Bullet",
+                                      textAlign: TextAlign.left,
                                       style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 30.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                  Text("3m 30s + 1s",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       )),
-                                  Text("delay: 15s",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[400],
-                                        fontWeight: FontWeight.w500,
-                                      ))
                                 ],
                               ),
-                              onPressed: () {
-                                Navigator.pushNamed(context, "/clock");
-                              })
+                            ),
+                          )
                         ],
                       ),
                     ],
