@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:reloh/types/clock.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -11,23 +12,20 @@ extension StringExtension on String {
   }
 }
 
-enum ChessColor {
-  white,
-  black,
-}
-
 class ClockPage extends StatefulWidget {
-  const ClockPage({super.key});
+  final ClockScreenArguments arguments;
+
+  const ClockPage({super.key, required this.arguments});
 
   @override
   State<StatefulWidget> createState() => ClockPageState();
 }
 
 class ClockPageState extends State<ClockPage> {
-  final whiteClock = ValueNotifier(Duration(milliseconds: 1));
-  final blackClock = ValueNotifier(Duration(milliseconds: 1));
   final ended = ValueNotifier(false);
 
+  late final whiteClock = ValueNotifier(widget.arguments.time);
+  late final blackClock = ValueNotifier(widget.arguments.time);
   late final Timer timer;
 
   ChessColor turn = ChessColor.white;
@@ -48,13 +46,15 @@ class ClockPageState extends State<ClockPage> {
       final subtractedDuration =
           (turn == ChessColor.white ? whiteClock : blackClock).value.inSeconds -
               1;
-      final duration = subtractedDuration < 0 ? 0 : subtractedDuration;
+      final duration = (subtractedDuration < 0 ? 0 : subtractedDuration);
 
-      if (turn == ChessColor.white) {
-        whiteClock.value = Duration(seconds: duration);
-      } else {
-        blackClock.value = Duration(seconds: duration);
-      }
+      setState(() {
+        if (turn == ChessColor.white) {
+          whiteClock.value = Duration(seconds: duration);
+        } else {
+          blackClock.value = Duration(seconds: duration);
+        }
+      });
     });
   }
 
@@ -119,6 +119,9 @@ class ClockPageState extends State<ClockPage> {
               onTap: () {
                 setState(() {
                   turn = ChessColor.black;
+                  whiteClock.value = Duration(
+                      seconds: whiteClock.value.inSeconds +
+                          widget.arguments.increment);
                 });
               },
             ),
@@ -130,6 +133,9 @@ class ClockPageState extends State<ClockPage> {
               onTap: () {
                 setState(() {
                   turn = ChessColor.white;
+                  blackClock.value = Duration(
+                      seconds: blackClock.value.inSeconds +
+                          widget.arguments.increment);
                 });
               },
             ),

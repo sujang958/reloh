@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:reloh/types/clock.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -53,7 +54,10 @@ class IndexPageState extends State<IndexPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, "/clock");
+                              Navigator.pushNamed(context, "/clock",
+                                  arguments: ClockScreenArguments(
+                                      increment: 1,
+                                      time: Duration(minutes: 1)));
                             },
                             child: Container(
                               decoration: BoxDecoration(
