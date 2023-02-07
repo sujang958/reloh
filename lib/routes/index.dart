@@ -70,12 +70,7 @@ class IndexPageState extends State<IndexPage> {
                                 ],
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, "/clock",
-                                    arguments: {
-                                      "time": Duration(minutes: 2),
-                                      "increment": Duration(seconds: 1),
-                                      "delay": Duration(seconds: 15)
-                                    });
+                                Navigator.pushNamed(context, "/clock");
                               })
                         ],
                       ),
