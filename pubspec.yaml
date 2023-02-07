@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  audioplayers: ^3.0.1
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -25,3 +26,6 @@ flutter:
     - family: Pretendard
       fonts:
         - asset: fonts/PretendardVariable.ttf
+
+  assets:
+    - assets/audio/click.mp3
