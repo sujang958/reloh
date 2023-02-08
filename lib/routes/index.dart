@@ -78,43 +78,52 @@ class IndexPageState extends State<IndexPage> {
                             ),
                             children: [
                               for (final clock in snapshot.data as List<Clock>)
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, "/clock",
-                                        arguments: clock);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 16.0, horizontal: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Bullet",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 30.0,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        Text(
-                                            "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                Dismissible(
+                                    key: Key(clock.id.toString()),
+                                    onDismissed: (DismissDirection direction) {
+                                      setState(() {
+                                        removeClock(clock.id);
+                                        snapshot.data?.removeWhere((element) => element.id == clock.id);
+                                      });
+                                    },
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(context, "/clock",
+                                            arguments: clock);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 16.0, horizontal: 20.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Bullet",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 30.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700,
+                                                )),
+                                            Text(
+                                                "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ))
                             ],
                           );
                         },
