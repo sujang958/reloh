@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reloh/types/clock.dart';
+import 'package:reloh/utils/store.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -14,6 +15,8 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> {
+  final Future<List<Clock>> clocks = getList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,57 +52,67 @@ class IndexPageState extends State<IndexPage> {
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 26.0),
                       ),
-                      GridView(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          childAspectRatio: 2 / 1,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                        ),
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, "/clock",
-                                  arguments: Clock(
-                                      id: 0.44,
-                                      increment: 1,
-                                      duration: Duration(minutes: 1)));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16.0, horizontal: 20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Bullet",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 30.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                      )),
-                                  Text("3m 30s + 1s",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      )),
-                                ],
-                              ),
+                      FutureBuilder(
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CupertinoActivityIndicator();
+                          }
+
+                          return GridView(
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              childAspectRatio: 2 / 1,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
                             ),
-                          )
-                        ],
-                      ),
+                            children: [
+                              for (final clock in snapshot.data as List<Clock>)
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/clock",
+                                        arguments: clock);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 16.0, horizontal: 20.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Bullet",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 30.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                            )),
+                                        Text(
+                                            "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                            ],
+                          );
+                        },
+                        future: clocks,
+                      )
                     ],
                   )))),
     );
