@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reloh/types/clock.dart';
@@ -23,6 +24,8 @@ class ClockPage extends StatefulWidget {
 
 class ClockPageState extends State<ClockPage> {
   final ended = ValueNotifier(false);
+  final player = AudioPlayer();
+  final clickSound = AssetSource("audio/click.mp3");
 
   late final whiteClock = ValueNotifier(widget.arguments.duration);
   late final blackClock = ValueNotifier(widget.arguments.duration);
@@ -106,6 +109,17 @@ class ClockPageState extends State<ClockPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    player.dispose();
+  }
+
+  void _playAudio() async {
+    player.play(clickSound);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -118,6 +132,7 @@ class ClockPageState extends State<ClockPage> {
               time: whiteClock,
               onTap: () {
                 setState(() {
+                  _playAudio();
                   turn = ChessColor.black;
                   whiteClock.value = Duration(
                       seconds: whiteClock.value.inSeconds +
@@ -132,6 +147,7 @@ class ClockPageState extends State<ClockPage> {
               time: blackClock,
               onTap: () {
                 setState(() {
+                  _playAudio();
                   turn = ChessColor.white;
                   blackClock.value = Duration(
                       seconds: blackClock.value.inSeconds +

@@ -26,9 +26,9 @@ class AddPageState extends State<AddPage> {
   void _finish() async {
     final id = await getAvailableId();
 
-    await addClock(id, duration, increment.inSeconds);
+    final newClock = await addClock(id, duration, increment.inSeconds);
 
-    Navigator.pop(context);
+    Navigator.pop(context, newClock);
   }
 
   @override

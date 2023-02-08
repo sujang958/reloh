@@ -23,7 +23,9 @@ class IndexPageState extends State<IndexPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, "/add").then((_) {
+            Navigator.pushNamed(context, "/add").then((newClock) {
+              if (newClock == null) return;
+
               setState(() {
                 clocks = getList();
                 ScaffoldMessenger.of(context)
