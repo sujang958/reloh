@@ -15,7 +15,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> {
-  final Future<List<Clock>> clocks = getList();
+  Future<List<Clock>> clocks = getList();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,14 @@ class IndexPageState extends State<IndexPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, "/add");
+            Navigator.pushNamed(context, "/add").then((_) {
+              setState(() {
+                clocks = getList();
+                ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text('Added a new clock')));
+              });
+            });
           },
           enableFeedback: false,
           backgroundColor: Colors.black,
