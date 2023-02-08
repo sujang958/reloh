@@ -13,7 +13,7 @@ extension StringExtension on String {
 }
 
 class ClockPage extends StatefulWidget {
-  final ClockScreenArguments arguments;
+  final Clock arguments;
 
   const ClockPage({super.key, required this.arguments});
 
@@ -24,8 +24,8 @@ class ClockPage extends StatefulWidget {
 class ClockPageState extends State<ClockPage> {
   final ended = ValueNotifier(false);
 
-  late final whiteClock = ValueNotifier(widget.arguments.time);
-  late final blackClock = ValueNotifier(widget.arguments.time);
+  late final whiteClock = ValueNotifier(widget.arguments.duration);
+  late final blackClock = ValueNotifier(widget.arguments.duration);
   late final Timer timer;
 
   ChessColor turn = ChessColor.white;

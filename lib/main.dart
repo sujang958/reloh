@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reloh/routes/add.dart';
 import 'package:reloh/routes/clock.dart';
 import 'package:reloh/routes/index.dart';
 import 'package:reloh/types/clock.dart';
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
         final routes = <String, WidgetBuilder>{
           "/": (context) => const IndexPage(),
           "/clock": (context) =>
-              ClockPage(arguments: settings.arguments as ClockScreenArguments),
+              ClockPage(arguments: settings.arguments as Clock),
+          "/add": (context) => const AddPage(),
         };
 
         WidgetBuilder builder =

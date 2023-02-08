@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reloh/types/clock.dart';
 
@@ -16,6 +17,14 @@ class IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, "/add");
+          },
+          enableFeedback: false,
+          backgroundColor: Colors.black,
+          child: Icon(CupertinoIcons.add)),
       body: SafeArea(
           child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -54,9 +63,10 @@ class IndexPageState extends State<IndexPage> {
                           GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, "/clock",
-                                  arguments: ClockScreenArguments(
+                                  arguments: Clock(
+                                      id: 0.44,
                                       increment: 1,
-                                      time: Duration(minutes: 1)));
+                                      duration: Duration(minutes: 1)));
                             },
                             child: Container(
                               decoration: BoxDecoration(
