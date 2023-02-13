@@ -50,7 +50,7 @@ class AddPageState extends State<AddPage> {
                       padding: EdgeInsets.symmetric(vertical: 26.0),
                     ),
                     Text(
-                      "Set your Duration",
+                      "Set clock's Duration",
                       style: TextStyle(
                           fontSize: 32.0, fontWeight: FontWeight.w700),
                     ),
@@ -92,7 +92,7 @@ class AddPageState extends State<AddPage> {
                       padding: EdgeInsets.symmetric(vertical: 26.0),
                     ),
                     Text(
-                      "Set your Increment",
+                      "Set clock's Increment",
                       style: TextStyle(
                           fontSize: 32.0, fontWeight: FontWeight.w700),
                     ),
