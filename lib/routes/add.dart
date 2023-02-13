@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
-import 'dart:ui';
+// todo: add vibration when almost timeout
 
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/cupertino.dart';
