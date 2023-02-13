@@ -19,8 +19,8 @@ class Clock {
   Clock({required this.duration, required this.increment, required this.id});
 
   factory Clock.fromMsgPack(String msgPackString) {
-    final clock =
-        msgpack.deserialize(Uint8List.fromList(msgPackString.split(DIVIDER).map((e) => int.parse(e)).toList()));
+    final clock = msgpack.deserialize(Uint8List.fromList(
+        msgPackString.split(DIVIDER).map((e) => int.parse(e)).toList()));
 
     return Clock(
         id: clock["id"],
@@ -34,5 +34,17 @@ class Clock {
       "increment": increment,
       "id": id
     }).join(DIVIDER);
+  }
+
+  String get type {
+    final minutes = duration.inMinutes;
+
+    if (minutes < 3) {
+      return "Bullet";
+    } else if (minutes < 10) {
+      return "Blitz";
+    } else {
+      return "Rapid";
+    }
   }
 }

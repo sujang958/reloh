@@ -52,11 +52,23 @@ class IndexPageState extends State<IndexPage> {
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 26.0),
                       ),
-                      Text(
-                        "Your Clocks",
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            fontVariations: [FontVariation("wght", 700)]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Your Clocks",
+                            style: TextStyle(
+                                fontSize: 30.0,
+                                fontVariations: [FontVariation("wght", 700)]),
+                          ),
+                          IconButton(
+                              enableFeedback: false,
+                              onPressed: () {
+                                showLicensePage(context: context);
+                              },
+                              icon: Icon(CupertinoIcons.info))
+                        ],
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 26.0),
@@ -85,7 +97,8 @@ class IndexPageState extends State<IndexPage> {
                                     onDismissed: (DismissDirection direction) {
                                       setState(() {
                                         removeClock(clock.id);
-                                        snapshot.data?.removeWhere((element) => element.id == clock.id);
+                                        snapshot.data?.removeWhere((element) =>
+                                            element.id == clock.id);
                                       });
                                     },
                                     child: GestureDetector(
@@ -107,7 +120,7 @@ class IndexPageState extends State<IndexPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("Bullet",
+                                            Text(clock.type,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                   fontSize: 30.0,
