@@ -57,14 +57,6 @@ android {
         versionName flutterVersionName
     }
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            signingConfig signingConfigs.release
-        }
-    }
-
     signingConfigs {
         release {
            keyAlias keystoreProperties['keyAlias']
@@ -73,6 +65,14 @@ android {
            storePassword keystoreProperties['storePassword']
         }
    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 flutter {
