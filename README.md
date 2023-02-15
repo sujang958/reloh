@@ -1,5 +1,5 @@
-# reloh
+# Reloh
 
 A Simple Chess Clock Application
 
-## IT'S BEING DEVELOPED, NOT COMPLETED.
+> Made with Flutter
