@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reloh/types/clock.dart';
 import 'package:reloh/utils/store.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -16,6 +18,57 @@ class IndexPage extends StatefulWidget {
 
 class IndexPageState extends State<IndexPage> {
   Future<List<Clock>> clocks = getList();
+
+  Future<bool> _launchUrl(String url) async {
+    return await launchUrlString(url);
+  }
+
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+
+              _launchUrl("https://reloh-pp.netlify.app/").then((value) {
+                if (value) return;
+
+                _showAlert(context, "Error",
+                    "Cannot open the privacy policy website due to the error. Please Visit https://reloh-pp.netlify.app yourself");
+              });
+            },
+            child: const Text('Reloh\'s Privacy Policy'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              showLicensePage(context: context);
+            },
+            child: const Text('Open Source Licenses'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAlert(BuildContext context, String title, String content) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('ok'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +118,7 @@ class IndexPageState extends State<IndexPage> {
                           IconButton(
                               enableFeedback: false,
                               onPressed: () {
-                                showLicensePage(context: context);
+                                _showActionSheet(context);
                               },
                               icon: Icon(CupertinoIcons.info))
                         ],
@@ -79,6 +132,8 @@ class IndexPageState extends State<IndexPage> {
                             return CupertinoActivityIndicator();
                           }
 
+                          final clocks = snapshot.data as List<Clock>;
+
                           return GridView(
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.vertical,
@@ -90,56 +145,65 @@ class IndexPageState extends State<IndexPage> {
                               mainAxisSpacing: 16,
                               crossAxisSpacing: 16,
                             ),
-                            children: [
-                              for (final clock in snapshot.data as List<Clock>)
-                                Dismissible(
-                                    key: Key(clock.id.toString()),
-                                    onDismissed: (DismissDirection direction) {
-                                      setState(() {
-                                        removeClock(clock.id);
-                                        snapshot.data?.removeWhere((element) =>
-                                            element.id == clock.id);
-                                      });
-                                    },
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/clock",
-                                            arguments: clock);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 16.0, horizontal: 20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(clock.type,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 30.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700,
-                                                )),
-                                            Text(
-                                                "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ))
-                            ],
+                            children: clocks.isEmpty
+                                ? [SizedBox.shrink()]
+                                : [
+                                    for (final clock in clocks)
+                                      Dismissible(
+                                          key: Key(clock.id.toString()),
+                                          onDismissed:
+                                              (DismissDirection direction) {
+                                            setState(() {
+                                              removeClock(clock.id);
+                                              snapshot.data?.removeWhere(
+                                                  (element) =>
+                                                      element.id == clock.id);
+                                            });
+                                          },
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, "/clock",
+                                                  arguments: clock);
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 16.0,
+                                                  horizontal: 20.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(clock.type,
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontSize: 30.0,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      )),
+                                                  Text(
+                                                      "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontSize: 18.0,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+                                          ))
+                                  ],
                           );
                         },
                         future: clocks,
