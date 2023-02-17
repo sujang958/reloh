@@ -50,34 +50,49 @@ class AddPageState extends State<AddPage> {
                       padding: EdgeInsets.symmetric(vertical: 26.0),
                     ),
                     Text(
-                      "Set clock's Duration",
+                      "Set your clock's Duration",
                       style: TextStyle(
-                          fontSize: 32.0, fontWeight: FontWeight.w700),
+                          fontSize: 36.0, fontWeight: FontWeight.w700),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 80.0),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: DurationPicker(
+                          onChange: (nextDuration) {
+                            setState(() {
+                              duration = nextDuration;
+                            });
+                          },
+                          snapToMins: 1.0,
+                          duration: duration,
+                          baseUnit: BaseUnit.minute),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 40.0),
                     ),
-                    DurationPicker(
-                        onChange: (nextDuration) {
-                          setState(() {
-                            duration = nextDuration;
-                          });
-                        },
-                        snapToMins: 1.0,
-                        duration: duration,
-                        baseUnit: BaseUnit.minute),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 40.0),
-                    ),
-                    CupertinoButton(
-                      child: Text("Go to the Next Step"),
-                      onPressed: () {
-                        pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
-                      },
-                      color: Colors.blue.shade800,
-                    ),
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 62.0,
+                        child: CupertinoButton(
+                          onPressed: () {
+                            pageController.animateToPage(1,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut);
+                          },
+                          color: Colors.blue.shade800,
+                          child: const Text(
+                            "Go to the Next Step",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 20.0),
+                          ),
+                        ),
+                      ),
+                    ))
                   ])),
           Padding(
               padding: const EdgeInsets.symmetric(
@@ -92,32 +107,47 @@ class AddPageState extends State<AddPage> {
                       padding: EdgeInsets.symmetric(vertical: 26.0),
                     ),
                     Text(
-                      "Set clock's Increment",
+                      "Set your clock's Increment",
                       style: TextStyle(
-                          fontSize: 32.0, fontWeight: FontWeight.w700),
+                          fontSize: 36.0, fontWeight: FontWeight.w700),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 80.0),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: DurationPicker(
+                          onChange: (nextDuration) {
+                            setState(() {
+                              increment = nextDuration;
+                            });
+                          },
+                          snapToMins: 1.0,
+                          duration: increment,
+                          baseUnit: BaseUnit.second),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 40.0),
                     ),
-                    DurationPicker(
-                        onChange: (nextDuration) {
-                          setState(() {
-                            increment = nextDuration;
-                          });
-                        },
-                        snapToMins: 1.0,
-                        duration: increment,
-                        baseUnit: BaseUnit.second),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 40.0),
-                    ),
-                    CupertinoButton(
-                      child: Text("Finish"),
-                      onPressed: () {
-                        _finish();
-                      },
-                      color: Colors.blue.shade800,
-                    ),
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 62.0,
+                        child: CupertinoButton(
+                          onPressed: () {
+                            _finish();
+                          },
+                          color: Colors.blue.shade800,
+                          child: Text(
+                            "Finish",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 20.0),
+                          ),
+                        ),
+                      ),
+                    ))
                   ]))
         ])));
   }

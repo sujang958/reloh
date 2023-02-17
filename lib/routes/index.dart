@@ -112,7 +112,7 @@ class IndexPageState extends State<IndexPage> {
                           Text(
                             "Your Clocks",
                             style: TextStyle(
-                                fontSize: 30.0,
+                                fontSize: 36.0,
                                 fontVariations: [FontVariation("wght", 700)]),
                           ),
                           IconButton(
@@ -173,8 +173,8 @@ class IndexPageState extends State<IndexPage> {
                                                     BorderRadius.circular(20.0),
                                               ),
                                               padding: EdgeInsets.symmetric(
-                                                  vertical: 16.0,
-                                                  horizontal: 20.0),
+                                                  vertical: 18.0,
+                                                  horizontal: 22.0),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -185,7 +185,7 @@ class IndexPageState extends State<IndexPage> {
                                                   Text(clock.type,
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
-                                                        fontSize: 30.0,
+                                                        fontSize: 34.0,
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w700,
@@ -194,7 +194,7 @@ class IndexPageState extends State<IndexPage> {
                                                       "${clock.duration.inMinutes}m${clock.duration.inSeconds - clock.duration.inMinutes * 60 < 1 ? "" : "${clock.duration.inSeconds - clock.duration.inMinutes * 60}s"} + ${clock.increment}s",
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
-                                                        fontSize: 18.0,
+                                                        fontSize: 22.0,
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w600,
